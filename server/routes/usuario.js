@@ -4,11 +4,14 @@ const bcrypt = require('bcrypt');
 const _ = require('underscore');
 
 const Usuario = require('../models/usuario');
+const { tokenVerify } = require('../middlewares/authentication');
 
 const app = express();
 
 
-app.get('/usuario', function(req, res) {
+// tokenVerify is the middleware to check correct token in header request
+
+app.get('/usuario', tokenVerify, function(req, res) {
 
     let desde = req.query.desde || 0;
     desde = Number(desde);
