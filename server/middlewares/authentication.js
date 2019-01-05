@@ -13,7 +13,9 @@ let tokenVerify = (req, res, next) => {
         if (err) {
             return res.status(401).json({
                 ok: false,
-                err
+                err: {
+                    message: 'Token not valid'
+                }
             });
         }
 
@@ -24,6 +26,32 @@ let tokenVerify = (req, res, next) => {
 
 };
 
+// ===========================
+// ADMIN_ROLE verification
+// ===========================
+
+let adminRoleVerification = (req, res, next) => {
+
+    let usuario = req.usuario;
+    console.log(usuario.role);
+
+    if (usuario.role === 'ADMIN_ROLE') {
+        next();
+    } else {
+
+        return res.status(401).json({
+            ok: false,
+            err: {
+                message: 'User has not ADMIN role'
+            }
+        });
+
+    }
+
+};
+
+
 module.exports = {
-    tokenVerify
+    tokenVerify,
+    adminRoleVerification
 }
