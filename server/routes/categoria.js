@@ -14,6 +14,8 @@ let app = express();
 app.get('/categoria', tokenVerify, (req, res) => {
 
     Categoria.find({})
+        .sort('descripcion')
+        .populate('usuario', 'nombre email')
         .exec((err, categorias) => {
 
             if (err) {
