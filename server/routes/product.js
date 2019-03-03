@@ -79,6 +79,38 @@ app.get('/product/:id', tokenVerify, (req, res) => {
         })
 });
 
+
+// ================
+// Find products
+// ================
+
+app.get('/product/find/:term', tokenVerify, (req, res) => {
+
+    let term = req.params.term;
+
+    let regex = new RegExp(term, 'i');
+
+    Product.find({ nombre: regex })
+        .populate('categoria', 'descripcion')
+        .exec((err, products) => {
+
+            if (err) {
+                return res.status(500).json({
+                    ok: false,
+                    err
+                })
+            }
+
+            res.json({
+                ok: true,
+                products
+            })
+
+        });
+
+});
+
+
 // ================
 // Create a product
 // ================
